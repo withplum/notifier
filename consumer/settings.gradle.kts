@@ -1,0 +1,1 @@
+includeBuild("../notifier-plugin")
