@@ -1,17 +1,16 @@
 package com.withplum.notifier.extensions
 
-import org.gradle.api.model.ObjectFactory
-import org.gradle.api.tasks.Internal
+import org.gradle.api.provider.Property
 
-open class NotifierExtension @JvmOverloads constructor(
-    // Needed for Gradle
-    @get:Internal
-    internal val name: String = "default",
-    objects: ObjectFactory
-) {
+interface NotifierExtension {
+
+    val versionsFilePath: Property<String>
+
+    val reportingEnabled: Property<Boolean>
+
 
     companion object {
 
-        const val NAME = "notifier"
+        const val NAME = "versionsNotifier"
     }
 }

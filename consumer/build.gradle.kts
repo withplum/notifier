@@ -4,4 +4,6 @@ plugins {
 
 
 configure<com.withplum.notifier.extensions.NotifierExtension> {
+    reportingEnabled.value(true)
+    versionsFilePath.set(rootDir.path + File.separator + "versions.properties")
 }
