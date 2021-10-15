@@ -1,13 +1,14 @@
 package com.withplum.notifier.tasks
 
 import com.withplum.notifier.assignment.Assigner
+import com.withplum.notifier.assignment.GithubUser
 import com.withplum.notifier.assignment.UpdatesForUser
-import com.withplum.notifier.assignment.assignments
 import com.withplum.notifier.github.GithubDependencyReporter
 import com.withplum.notifier.model.VersionStatus
 import com.withplum.notifier.parsing.UpdatesParser
 import com.withplum.notifier.stdout.StdOutDependencyReporter
 import org.gradle.api.DefaultTask
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
@@ -26,7 +27,10 @@ internal abstract class NotifyDependenciesTask : DefaultTask() {
     abstract val versionsFilePath: Property<String>
 
     @get:Input
-    abstract val reportingEnabled: Property<Boolean>
+    abstract val stdOutEnabled: Property<Boolean>
+
+    @get:Input
+    abstract val githubEnabled: Property<Boolean>
 
     @get:Input
     abstract val githubInstallationId: Property<String>
@@ -39,6 +43,9 @@ internal abstract class NotifyDependenciesTask : DefaultTask() {
 
     @get:Input
     abstract val githubIssueId: Property<String>
+
+    @get:Input
+    abstract val githubAssignments: MapProperty<String, List<String>>
 
     @get:Input
     @set:Option(
@@ -61,8 +68,8 @@ internal abstract class NotifyDependenciesTask : DefaultTask() {
 
         val userAssignments = parseAndConstructUpdates(versionProperties, fileLines)
 
-        if (reportingEnabled.get()) {
-            StdOutDependencyReporter().report(userAssignments)
+        if (stdOutEnabled.get()) StdOutDependencyReporter().report(userAssignments)
+        if (githubEnabled.get()) {
             GithubDependencyReporter(
                 jwtToken = jwtToken,
                 issueId = githubIssueId.get(),
@@ -76,6 +83,10 @@ internal abstract class NotifyDependenciesTask : DefaultTask() {
     private fun parseAndConstructUpdates(versionProperties: Properties, fileLines: List<String>): List<UpdatesForUser> {
         val parser = UpdatesParser()
         val updates = parser.parseUpdates(versionProperties, fileLines, listOf(VersionStatus.ALPHA))
+        val assignments: Map<GithubUser, List<String>> = createAssignments(githubAssignments.get())
         return Assigner(assignments = assignments).assign(updates)
     }
+
+    private fun createAssignments(assignments: Map<String, List<String>>): Map<GithubUser, List<String>> =
+        assignments.mapKeys { GithubUser(username = it.key) }
 }

@@ -1,12 +1,15 @@
 package com.withplum.notifier.extensions
 
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
 interface NotifierExtension {
 
     val versionsFilePath: Property<String>
 
-    val reportingEnabled: Property<Boolean>
+    val stdOutEnabled: Property<Boolean>
+
+    val githubEnabled: Property<Boolean>
 
     val githubInstallationId: Property<String>
 
@@ -15,6 +18,8 @@ interface NotifierExtension {
     val githubRepository: Property<String>
 
     val githubIssueId: Property<String>
+
+    val githubDependencyAssignments: MapProperty<String, List<String>>
 
     companion object {
 

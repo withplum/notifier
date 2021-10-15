@@ -17,11 +17,13 @@ open class NotifierPlugin : Plugin<Project> {
             tasks {
                 register<NotifyDependenciesTask>(NotifyDependenciesTask.NAME) {
                     versionsFilePath.set(notifierExtension.versionsFilePath)
-                    reportingEnabled.set(notifierExtension.reportingEnabled)
+                    stdOutEnabled.set(notifierExtension.stdOutEnabled)
+                    githubEnabled.set(notifierExtension.githubEnabled)
                     githubInstallationId.set(notifierExtension.githubInstallationId)
                     githubRepositorySlug.set(notifierExtension.githubRepositorySlug)
                     githubRepository.set(notifierExtension.githubRepository)
                     githubIssueId.set(notifierExtension.githubIssueId)
+                    githubAssignments.set(notifierExtension.githubDependencyAssignments)
                 }
             }
         }
