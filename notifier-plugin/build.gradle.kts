@@ -2,6 +2,7 @@ plugins {
     `kotlin-dsl`
     `java-gradle-plugin`
     id("com.gradle.plugin-publish") version "0.16.0"
+    kotlin("kapt")
 }
 
 repositories {
@@ -13,6 +14,11 @@ version = "0.5.0"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:_")
+    implementation(Square.retrofit2.retrofit)
+    implementation(Square.okHttp3.loggingInterceptor)
+    implementation(Square.retrofit2.converter.moshi)
+    implementation(Square.moshi)
+    kapt(Square.moshi.kotlinCodegen)
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:_")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:_")
