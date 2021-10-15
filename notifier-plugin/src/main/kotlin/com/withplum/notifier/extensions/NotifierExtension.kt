@@ -8,6 +8,13 @@ interface NotifierExtension {
 
     val reportingEnabled: Property<Boolean>
 
+    val githubInstallationId: Property<String>
+
+    val githubRepositorySlug: Property<String>
+
+    val githubRepository: Property<String>
+
+    val githubIssueId: Property<String>
 
     companion object {
 

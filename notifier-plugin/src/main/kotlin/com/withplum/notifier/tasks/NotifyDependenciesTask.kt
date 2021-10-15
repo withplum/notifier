@@ -3,18 +3,15 @@ package com.withplum.notifier.tasks
 import com.withplum.notifier.assignment.Assigner
 import com.withplum.notifier.assignment.UpdatesForUser
 import com.withplum.notifier.assignment.assignments
+import com.withplum.notifier.github.GithubDependencyReporter
 import com.withplum.notifier.model.VersionStatus
 import com.withplum.notifier.parsing.UpdatesParser
 import com.withplum.notifier.stdout.StdOutDependencyReporter
 import org.gradle.api.DefaultTask
-import org.gradle.api.logging.Logger
-import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
-import org.gradle.workers.WorkAction
-import org.gradle.workers.WorkParameters
 import java.io.File
 import java.util.Properties
 
@@ -30,6 +27,18 @@ internal abstract class NotifyDependenciesTask : DefaultTask() {
 
     @get:Input
     abstract val reportingEnabled: Property<Boolean>
+
+    @get:Input
+    abstract val githubInstallationId: Property<String>
+
+    @get:Input
+    abstract val githubRepositorySlug: Property<String>
+
+    @get:Input
+    abstract val githubRepository: Property<String>
+
+    @get:Input
+    abstract val githubIssueId: Property<String>
 
     @get:Input
     @set:Option(
@@ -54,7 +63,13 @@ internal abstract class NotifyDependenciesTask : DefaultTask() {
 
         if (reportingEnabled.get()) {
             StdOutDependencyReporter().report(userAssignments)
-            // TODO add github integration
+            GithubDependencyReporter(
+                jwtToken = jwtToken,
+                issueId = githubIssueId.get(),
+                installationId = githubInstallationId.get(),
+                repositorySlug = githubRepositorySlug.get(),
+                repository = githubRepository.get()
+            ).report(userAssignments)
         }
     }
 
@@ -62,18 +77,5 @@ internal abstract class NotifyDependenciesTask : DefaultTask() {
         val parser = UpdatesParser()
         val updates = parser.parseUpdates(versionProperties, fileLines, listOf(VersionStatus.ALPHA))
         return Assigner(assignments = assignments).assign(updates)
-    }
-
-    class Params : WorkParameters
-
-    abstract class NotifyDependenciesWorkAction : WorkAction<Params> {
-
-        private val logger: Logger = Logging.getLogger(
-            "withPlum:NotifierPlugin:${NotifyDependenciesTask::class.java.simpleName}"
-        )
-
-        override fun execute() {
-            println("Hello Plum!")
-        }
     }
 }

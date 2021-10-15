@@ -18,6 +18,10 @@ open class NotifierPlugin : Plugin<Project> {
                 register<NotifyDependenciesTask>(NotifyDependenciesTask.NAME) {
                     versionsFilePath.set(notifierExtension.versionsFilePath)
                     reportingEnabled.set(notifierExtension.reportingEnabled)
+                    githubInstallationId.set(notifierExtension.githubInstallationId)
+                    githubRepositorySlug.set(notifierExtension.githubRepositorySlug)
+                    githubRepository.set(notifierExtension.githubRepository)
+                    githubIssueId.set(notifierExtension.githubIssueId)
                 }
             }
         }
