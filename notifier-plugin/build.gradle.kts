@@ -1,6 +1,7 @@
 plugins {
     `kotlin-dsl`
     `java-gradle-plugin`
+    id("maven-publish")
     id("com.gradle.plugin-publish") version "0.16.0"
     kotlin("kapt")
 }
@@ -21,20 +22,22 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:_")
 }
 
+group = "com.withplum"
+version = "0.1.0"
+
 gradlePlugin {
     plugins {
         create("notifierPlugin") {
             id = "com.withplum.notifier"
-            displayName = "Parse and notify about dependency updates"
-            description = "Parses the versions.properties (created by the refreshVersions plugin) file and notifies if there are updates. Current implementation posts updates to a GithubIssue."
+            displayName = "Version Notifier Plugin"
+            description = "Parses the versions.properties (created by the refreshVersions plugin) file and notifies if there are updates. Current implementation posts updates to a Github Issue."
             implementationClass = "com.withplum.notifier.NotifierPlugin"
-            version = "0.1.0"
         }
     }
 }
 
 pluginBundle {
     website = "https://github.com/withplum/notifier"
-    vcsUrl = "https://github.com/withplum/notifier"
+    vcsUrl = "https://github.com/withplum/notifier.git"
     tags = listOf("gradle", "refreshVersions", "github", "assignment")
 }
