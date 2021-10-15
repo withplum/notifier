@@ -9,9 +9,6 @@ repositories {
     mavenCentral()
 }
 
-group = "com.withplum.notifier"
-version = "0.5.0"
-
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:_")
     implementation(Square.retrofit2.retrofit)
@@ -29,8 +26,9 @@ gradlePlugin {
         create("notifierPlugin") {
             id = "com.withplum.notifier"
             displayName = "Parse and notify about dependency updates"
-            description = "Parses the versions.properties file and notifies if there are updates."
+            description = "Parses the versions.properties (created by the refreshVersions plugin) file and notifies if there are updates. Current implementation posts updates to a GithubIssue."
             implementationClass = "com.withplum.notifier.NotifierPlugin"
+            version = "0.1.0"
         }
     }
 }
@@ -38,5 +36,5 @@ gradlePlugin {
 pluginBundle {
     website = "https://github.com/withplum/notifier"
     vcsUrl = "https://github.com/withplum/notifier"
-    tags = listOf("gradle", "refreshVersions", "android")
+    tags = listOf("gradle", "refreshVersions", "github", "assignment")
 }
