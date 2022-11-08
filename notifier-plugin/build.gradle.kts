@@ -17,9 +17,6 @@ dependencies {
     implementation(Square.retrofit2.converter.moshi)
     implementation(Square.moshi)
     ksp(Square.moshi.kotlinCodegen)
-
-    testImplementation("org.junit.jupiter:junit-jupiter-api:_")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:_")
 }
 
 group = "com.withplum"
