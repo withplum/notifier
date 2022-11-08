@@ -3,7 +3,7 @@ plugins {
     `java-gradle-plugin`
     id("maven-publish")
     id("com.gradle.plugin-publish") version "0.16.0"
-    kotlin("kapt")
+    id("com.google.devtools.ksp").version("1.7.20-1.0.8")
 }
 
 repositories {
@@ -16,7 +16,7 @@ dependencies {
     implementation(Square.okHttp3.loggingInterceptor)
     implementation(Square.retrofit2.converter.moshi)
     implementation(Square.moshi)
-    kapt(Square.moshi.kotlinCodegen)
+    ksp(Square.moshi.kotlinCodegen)
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:_")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:_")
