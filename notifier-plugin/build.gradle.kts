@@ -3,7 +3,7 @@ plugins {
     `java-gradle-plugin`
     id("maven-publish")
     id("com.gradle.plugin-publish") version "0.16.0"
-    id("com.google.devtools.ksp").version("1.7.20-1.0.8")
+    id("com.google.devtools.ksp").version("1.7.21-1.0.8")
 }
 
 repositories {
